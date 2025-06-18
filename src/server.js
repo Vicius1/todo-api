@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 
 const userRoutes = require('./routes/user.routes.js');
+const taskRoutes = require('./routes/task.routes.js');
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/users', userRoutes);
+app.use('/tasks', taskRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
