@@ -7,11 +7,13 @@ class TaskService {
 
     // Criar uma nova tarefa
     async create(userId, taskData) {
-        const { name, description } = taskData;
+        const { name, description, priority, dueDate } = taskData;
         return this.prisma.task.create({
         data: {
             name,
             description,
+            priority,
+            dueDate: dueDate ? new Date(dueDate) : null,
             userId: userId, // Vincula a tarefa ao usuário logado
         },
         });
