@@ -4,15 +4,14 @@ const prisma = require('../models/prisma');
 const UserService = require('../services/UserService');
 const UserController = require('../controllers/UserController');
 
-// --- Ponto de Injeção de Dependência ---
-// 1. Criamos uma instância do Service, passando o prisma como dependência
+// --- Ponto de Injeção de Dependências ---
 const userServiceInstance = new UserService(prisma);
-
-// 2. Criamos uma instância do Controller, passando o service como dependência
 const userControllerInstance = new UserController(userServiceInstance);
 
 const router = Router();
-// A rota agora chama o método da *instância* do controller
+// Rota de cadastro
 router.post('/register', userControllerInstance.create);
+// Rota de login
+router.post('/login', userControllerInstance.login);
 
 module.exports = router;
