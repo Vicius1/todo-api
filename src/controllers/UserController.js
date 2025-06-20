@@ -12,17 +12,22 @@ class UserController {
             const { name, email, password } = req.body;
 
             if (!name || !email || !password) {
-                return res.status(400).json({ message: 'Todos os campos são obrigatórios.' });
+                return res
+                    .status(400)
+                    .json({ message: "Todos os campos são obrigatórios." });
             }
 
-            const newUser = await this.userService.create(name, email, password);
+            const newUser = await this.userService.create(
+                name,
+                email,
+                password
+            );
 
             return res.status(201).json(newUser);
-
         } catch (error) {
             return res.status(409).json({ message: error.message });
         }
-    }
+    };
 
     // Responsável por lidar com a requisição de login de um usuário.
     login = async (req, res) => {
@@ -30,17 +35,18 @@ class UserController {
             const { email, password } = req.body;
 
             if (!email || !password) {
-                return res.status(400).json({ message: 'Todos os campos são obrigatórios.' });
+                return res
+                    .status(400)
+                    .json({ message: "Todos os campos são obrigatórios." });
             }
 
             const result = await this.userService.login(email, password);
 
             return res.status(200).json(result);
-
         } catch (error) {
             return res.status(401).json({ message: error.message });
         }
-    }
+    };
 }
 
 module.exports = UserController;
