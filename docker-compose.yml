@@ -1,0 +1,38 @@
+services:
+    # Serviço 1: Nossa API Node.js
+    api:
+        container_name: todo_api_container
+        build: . # Constrói a imagem a partir do Dockerfile no diretório atual
+        ports:
+            - "3000:3000" # Mapeia a porta 3000 do contêiner para a porta 3000 da máquina
+        env_file:
+            - .env.docker # Carrega as variáveis de ambiente a partir deste arquivo
+        depends_on:
+            - db # Diz ao Docker para iniciar o serviço 'db' antes de iniciar a 'api'
+        networks:
+            - todonet
+
+    # Serviço 2: Nosso banco de dados PostgreSQL
+    db:
+        image: postgres:15-alpine
+        container_name: todo_db_container
+        restart: always
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: 123
+            POSTGRES_DB: todo_db
+        ports:
+            - "5432:5432" # Mapeia a porta do Postgres para a máquina (para acesso via pgAdmin)
+        volumes:
+            - postgres_data:/var/lib/postgresql/data # Persiste os dados do banco
+        networks:
+            - todonet
+
+# Define a rede que os contêineres usarão para se comunicar
+networks:
+    todonet:
+        driver: bridge
+
+# Define o volume para persistir os dados do banco
+volumes:
+    postgres_data:
