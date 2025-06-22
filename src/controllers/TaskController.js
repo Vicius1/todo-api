@@ -8,12 +8,18 @@ class TaskController {
 
     // Responsável por lidar com a requisição de criação de uma nova tarefa.
     create = async (req, res) => {
+        const { name } = req.body;
+
+        if (!name || typeof name !== "string" || name.trim() === "") {
+            return res.status(400).json({ message: 'O campo "name" é obrigatório.' });
+        }
+
         try {
             const userId = req.userId;
             const task = await this.taskService.create(userId, req.body);
             res.status(201).json(task);
         } catch (error) {
-            res.status(400).json({ message: error.message });
+            res.status(400).json({ message: "Ocorreu um erro interno ao criar a tarefa." });
         }
     };
 
@@ -25,12 +31,18 @@ class TaskController {
             const tasks = await this.taskService.findAll(userId, status);
             res.status(200).json(tasks);
         } catch (error) {
-            res.status(400).json({ message: error.message });
+            res.status(400).json({ message: "Ocorreu um erro interno ao listar as tarefas." });
         }
     };
 
     // Responsável por lidar com a requisição de atualização de uma tarefa específica.
     update = async (req, res) => {
+        const { name } = req.body;
+
+        if (name !== undefined && (typeof name !== "string" || name.trim() === "")) {
+            return res.status(400).json({ message: 'O campo "name" não pode ser vazio.' });
+        }
+
         try {
             const userId = req.userId;
             const taskId = parseInt(req.params.id);

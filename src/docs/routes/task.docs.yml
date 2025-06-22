@@ -1,0 +1,121 @@
+/tasks:
+  post:
+    tags:
+      - Tasks
+    summary: Cria uma nova tarefa
+    description: Adiciona uma nova tarefa para o usuário que está autenticado.
+    security:
+      - BearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: "Finalizar o relatório"
+              description:
+                type: string
+                example: "Reunir os dados e gerar os gráficos."
+              priority:
+                type: string
+                example: "alta"
+              dueDate:
+                type: string
+                format: date-time
+                example: "2025-12-31T23:59:59Z"
+            required:
+              - name
+    responses:
+      '201':
+        description: Tarefa criada com sucesso.
+      '400':
+        description: Dados inválidos.
+      '401':
+        description: Não autorizado.
+
+  get:
+    tags:
+      - Tasks
+    summary: Lista as tarefas do usuário
+    description: Retorna uma lista de todas as tarefas pertencentes ao usuário autenticado. Pode ser filtrada por status.
+    security:
+      - BearerAuth: []
+    parameters:
+      - in: query
+        name: status
+        schema:
+          type: string
+          enum: [pendente, concluída]
+        description: Filtra tarefas por status.
+    responses:
+      '200':
+        description: Lista de tarefas retornada com sucesso.
+      '401':
+        description: Não autorizado.
+
+/tasks/{id}:
+  put:
+    tags:
+      - Tasks
+    summary: Atualiza uma tarefa existente
+    description: Permite ao usuário autenticado atualizar os dados de uma de suas tarefas existentes.
+    security:
+      - BearerAuth: []
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        description: O ID da tarefa a ser atualizada.
+    requestBody:
+      description: Campos da tarefa a serem atualizados.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              description:
+                type: string
+              status:
+                type: string
+                enum: [pendente, concluída]
+              priority:
+                type: string
+              dueDate:
+                type: string
+                format: date-time
+    responses:
+      '200':
+        description: Tarefa atualizada com sucesso.
+      '401':
+        description: Não autorizado.
+      '404':
+        description: Tarefa não encontrada ou não pertence ao usuário.
+
+  delete:
+    tags:
+      - Tasks
+    summary: Deleta uma tarefa
+    description: Remove uma tarefa existente do usuário autenticado.
+    security:
+      - BearerAuth: []
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        description: O ID da tarefa a ser deletada.
+    responses:
+      '204':
+        description: Tarefa deletada com sucesso. Não há conteúdo no retorno.
+      '401':
+        description: Não autorizado.
+      '404':
+        description: Tarefa não encontrada ou não pertence ao usuário.
