@@ -58,6 +58,12 @@ O projeto segue uma arquitetura em camadas para garantir a separação de respon
 -   **Services:** Contêm a lógica de negócio principal da aplicação.
 -   **Models/Prisma:** A camada de acesso aos dados, gerenciada pelo Prisma ORM.
 
+### Modelo de Dados (ERD)
+
+A estrutura do banco de dados, com as entidades `User` e `Task` e seu relacionamento, é definida pelo `schema.prisma` e pode ser visualizada no seguinte diagrama:
+
+![Diagrama de Entidade e Relacionamento](assets/ERD.svg)
+
 ---
 
 ## 🛠️ Pré-requisitos
