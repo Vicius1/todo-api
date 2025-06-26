@@ -8,10 +8,22 @@ class TaskController {
 
     // Responsável por lidar com a requisição de criação de uma nova tarefa.
     create = async (req, res) => {
-        const { name } = req.body;
+        const { name, status, priority, dueDate } = req.body;
 
         if (!name || typeof name !== "string" || name.trim() === "") {
             return res.status(400).json({ message: 'O campo "name" é obrigatório.' });
+        }
+
+        if (status && !["pendente", "concluída"].includes(status)) {
+            return res.status(400).json({ message: 'Se fornecido, o status deve ser "pendente" ou "concluída".' });
+        }
+
+        if (priority && !["baixa", "media", "alta"].includes(priority)) {
+            return res.status(400).json({ message: 'Se fornecida, a prioridade deve ser "baixa", "media" ou "alta".' });
+        }
+
+        if (dueDate && isNaN(new Date(dueDate).getTime())) {
+            return res.status(400).json({ message: 'O formato de dueDate é inválido. Use o padrão ISO 8601 (Ex: "2025-12-31T23:59:59.000Z").' });
         }
 
         try {
@@ -19,7 +31,7 @@ class TaskController {
             const task = await this.taskService.create(userId, req.body);
             res.status(201).json(task);
         } catch (error) {
-            res.status(400).json({ message: "Ocorreu um erro interno ao criar a tarefa." });
+            res.status(500).json({ message: "Ocorreu um erro interno ao criar a tarefa." });
         }
     };
 
@@ -31,16 +43,28 @@ class TaskController {
             const tasks = await this.taskService.findAll(userId, status);
             res.status(200).json(tasks);
         } catch (error) {
-            res.status(400).json({ message: "Ocorreu um erro interno ao listar as tarefas." });
+            res.status(500).json({ message: "Ocorreu um erro interno ao listar as tarefas." });
         }
     };
 
     // Responsável por lidar com a requisição de atualização de uma tarefa específica.
     update = async (req, res) => {
-        const { name } = req.body;
+        const { name, status, priority, dueDate } = req.body;
 
         if (name !== undefined && (typeof name !== "string" || name.trim() === "")) {
             return res.status(400).json({ message: 'O campo "name" não pode ser vazio.' });
+        }
+
+        if (status && !["pendente", "concluída"].includes(status)) {
+            return res.status(400).json({ message: 'O status deve ser "pendente" ou "concluída".' });
+        }
+
+        if (priority && !["baixa", "media", "alta"].includes(priority)) {
+            return res.status(400).json({ message: 'Se fornecida, a prioridade deve ser "baixa", "media" ou "alta".' });
+        }
+
+        if (dueDate && isNaN(new Date(dueDate).getTime())) {
+            return res.status(400).json({ message: 'O formato de dueDate é inválido. Use o padrão ISO 8601 (Ex: "2025-12-31T23:59:59.000Z").' });
         }
 
         try {
