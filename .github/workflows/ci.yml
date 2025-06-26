@@ -1,0 +1,59 @@
+name: CI - API de Tarefas
+
+# Define os gatilhos
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+# Define os "trabalhos" (jobs) a serem executados
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: testpassword
+          POSTGRES_DB: testdb
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    # Define os passos sequenciais que o job executará
+    steps:
+      # Passo 1: Baixar o código do seu repositório para a máquina virtual
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      # Passo 2: Configurar o ambiente Node.js na versão 18
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      # Passo 3: Instalar todas as dependências do projeto
+      - name: Instalar dependências
+        run: npm install
+
+      # Passo 4: Rodar as migrações do Prisma no banco de dados do serviço
+      - name: Rodar as migrações de teste
+        run: npx prisma migrate deploy
+        # Definimos a variável de ambiente necessária para as migrações
+        env:
+          DATABASE_URL: postgresql://testuser:testpassword@localhost:5432/testdb?schema=public
+
+      # Passo 5: Rodar a suíte de testes completa
+      - name: Rodar os testes
+        run: npm test
+        # Definimos as variáveis de ambiente necessárias para os testes rodarem
+        env:
+          DATABASE_URL: postgresql://testuser:testpassword@localhost:5432/testdb?schema=public
+          JWT_SECRET: a-secret-for-ci-tests
