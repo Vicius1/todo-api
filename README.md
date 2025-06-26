@@ -1,11 +1,11 @@
 # API de Gerenciamento de Tarefas (To-Do List)
 
-![Build Status](https://img.shields.io/badge/tests-passing-brightgreen)
+[![CI - API de Tarefas](https://github.com/Vicius1/todo-api/actions/workflows/ci.yml/badge.svg)](https://github.com/Vicius1/todo-api/actions/workflows/ci.yml)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
 
-## 📝 Descrição do Projeto
+## Descrição do Projeto
 
 API RESTful para um sistema de gerenciamento de tarefas (to-do list), desenvolvida como aprendizado de backend. A aplicação permite que usuários se cadastrem, se autentiquem de forma segura e gerenciem suas próprias tarefas pessoais.
 
@@ -13,7 +13,7 @@ O projeto foi construído seguindo as melhores práticas de desenvolvimento, com
 
 ---
 
-## ✨ Funcionalidades Principais
+## Funcionalidades Principais
 
 -   **Autenticação de Usuários:** Sistema completo de cadastro e login com autenticação via Token JWT.
 -   **CRUD de Tarefas:** Usuários autenticados podem Criar, Listar, Atualizar e Deletar suas próprias tarefas.
@@ -23,8 +23,11 @@ O projeto foi construído seguindo as melhores práticas de desenvolvimento, com
 -   **Documentação Interativa:** Uma interface Swagger (`/api-docs`) documenta todos os endpoints e permite testá-los diretamente pelo navegador.
 
 ---
+
 ### Endpoints da API
 
+<div align="center">
+    
 | Verbo HTTP | Rota                | Descrição                      | Autenticação Requerida |
 | :--------- | :------------------ | :----------------------------- | :--------------------- |
 | `POST`     | `/users/register`   | Registra um novo usuário.      | Não                    |
@@ -33,9 +36,12 @@ O projeto foi construído seguindo as melhores práticas de desenvolvimento, com
 | `GET`      | `/tasks`            | Lista as tarefas do usuário.   | Sim (JWT)              |
 | `PUT`      | `/tasks/:id`        | Atualiza uma tarefa existente. | Sim (JWT)              |
 | `DELETE`   | `/tasks/:id`        | Deleta uma tarefa existente.   | Sim (JWT)              |
+
+</div>
+    
 ---
 
-## 🚀 Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 Este projeto foi construído com as seguintes tecnologias e bibliotecas:
 
@@ -49,7 +55,7 @@ Este projeto foi construído com as seguintes tecnologias e bibliotecas:
 
 ---
 
-## 🏛️ Arquitetura
+## Arquitetura
 
 O projeto segue uma arquitetura em camadas para garantir a separação de responsabilidades e a manutenibilidade:
 
@@ -62,11 +68,15 @@ O projeto segue uma arquitetura em camadas para garantir a separação de respon
 
 A estrutura do banco de dados, com as entidades `User` e `Task` e seu relacionamento, é definida pelo `schema.prisma` e pode ser visualizada no seguinte diagrama:
 
+<div align="center">
+
 ![Diagrama de Entidade e Relacionamento](assets/ERD.svg)
+
+</div>
 
 ---
 
-## 🛠️ Pré-requisitos
+## Pré-requisitos
 
 Para a abordagem recomendada com **Docker**, o único pré-requisito é:
 * [Docker](https://www.docker.com/products/docker-desktop/) e Docker Compose (geralmente já vem com o Docker Desktop).
@@ -78,7 +88,7 @@ Para rodar este projeto **localmente (sem Docker)**, você precisaria ter as seg
 
 ---
 
-## ⚙️ Como Executar o Projeto (com Docker)
+## Como Executar o Projeto (com Docker)
 
 Existem duas maneiras de executar a aplicação: com Docker (recomendado) ou localmente.
 
@@ -148,14 +158,14 @@ Existem duas maneiras de executar a aplicação: com Docker (recomendado) ou loc
 
 ---
 
-## 📖 Documentação da API
+## Documentação da API
 
 A documentação completa e interativa dos endpoints está disponível através do Swagger. Após iniciar o projeto, acesse:
 
 **[http://localhost:3000/api-docs](http://localhost:3000/api-docs)**
 
 ---
-## 💡 Exemplos de Uso (cURL)
+## Exemplos de Uso (cURL)
 
 Aqui estão alguns exemplos de como interagir com a API usando o cURL.
 
@@ -181,7 +191,7 @@ curl -X POST http://localhost:3000/users/login \
   "password": "senhaForte123"
 }'
 ```
-> Copie o token retornado para usar no próximo passo.
+> Copie o token retornado para usar nos próximos passos.
 
 Para os exemplos abaixo, substitua SEU_TOKEN_JWT_AQUI pelo token que você obteve no passo 2.
 
@@ -235,7 +245,7 @@ curl -X DELETE http://localhost:3000/tasks/1 \
 
 ---
 
-## 🧪 Como Executar os Testes
+## Como Executar os Testes
 
 ### Método 1: Com Docker (Recomendado)
 
@@ -277,7 +287,7 @@ curl -X DELETE http://localhost:3000/tasks/1 \
     ```
 ---
 
-## 🔑 Template para `.env.example`
+## Template para `.env.example`
 
 Ele serve de guia para a criação dos arquivos `.env.docker` e `.env.test`.
 
