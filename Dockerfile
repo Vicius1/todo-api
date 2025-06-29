@@ -15,6 +15,7 @@ COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/src ./src
+COPY --from=builder /app/__tests__ ./__tests__
 
 COPY entrypoint.sh .
 RUN chmod +x ./entrypoint.sh
