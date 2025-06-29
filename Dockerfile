@@ -1,31 +1,27 @@
-# Imagem base
-FROM node:lts-alpine
+# ---- ESTÁGIO DE BUILD ----
+FROM node:lts-alpine AS builder
 
-# Diretório de trabalho
 WORKDIR /app
 
-# Copiar os arquivos de dependência
 COPY package*.json ./
 
-# Copiar o schema do Prisma ANTES de instalar as dependências.
 COPY prisma ./prisma/
 
-# Instalar as dependências.
 RUN npm install
 
-# Copiar o resto do código da aplicação.
 COPY . .
 
-# Copiar script de entrypoint e torná-lo executável
-COPY entrypoint.sh .
-RUN sed -i 's/\r$//' ./entrypoint.sh
-RUN chmod +x ./entrypoint.sh
+# ---- ESTÁGIO DE PRODUÇÃO ----
+FROM node:lts-alpine
 
-# Expor a porta
+WORKDIR /app
+
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder /app/src ./src
+
 EXPOSE 3000
 
-# Definir o entrypoint
-ENTRYPOINT ["./entrypoint.sh"]
-
-# Comando para iniciar a aplicação
-CMD ["npm", "run", "start"]
+CMD ["sh", "-c", "npx prisma migrate deploy && npm run start"]
