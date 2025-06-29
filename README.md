@@ -117,13 +117,7 @@ Existem duas maneiras de executar a aplicação: com Docker (recomendado) ou loc
     ```bash
     docker compose up --build -d
     ```
-
-4.  **Execute as migrações do banco de dados:**
-    Com os contêineres rodando, execute este comando para criar as tabelas no banco de dados da aplicação (`todo_db`).
-    ```bash
-    docker compose exec api npx prisma migrate deploy
-    ```
-
+    
 **Pronto!** A API estará rodando em `http://localhost:3000`.
 
 ### Método 2: Localmente (Sem Docker)
