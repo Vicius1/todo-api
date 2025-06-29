@@ -100,17 +100,10 @@ Existem duas maneiras de executar a aplicação: com Docker (recomendado) ou loc
     cd todo-api
     ```
 
-2.  **Crie os arquivos de variáveis de ambiente:**
-    Na raiz do projeto, você encontrará um arquivo `.env.example`. Use-o como base para criar seus arquivos de configuração:
-    ```bash
-    # Crie uma cópia para o ambiente Docker
-    cp .env.example .env.docker
-
-    # Crie uma cópia para o ambiente de testes
-    cp .env.example .env.test
-    ```
-    * Abra os arquivos criados e ajuste os valores, especialmente a `JWT_SECRET`.
-    * **Importante:** Para o `.env.test`, certifique-se de que o nome do banco de dados na `DATABASE_URL` seja diferente (ex: `todo_db_test`).
+2.  **Crie o arquivo `.env.docker`:**
+    Copie o conteúdo do `.env.example` para um novo arquivo chamado `.env.docker` e preencha as variáveis. A `DATABASE_URL` deve apontar para o serviço `db`.
+    * **Exemplo de `DATABASE_URL` para este arquivo:**
+      `postgresql://postgres:mysecretpassword@db:5432/todo_db?schema=public`
 
 3.  **Construa e inicie os contêineres:**
     Este comando irá construir a imagem da API e iniciar os serviços da API e do banco de dados em segundo plano.
@@ -132,11 +125,10 @@ Existem duas maneiras de executar a aplicação: com Docker (recomendado) ou loc
 2.  **Configure o Banco de Dados:**
     Garanta que você tenha um servidor PostgreSQL rodando localmente. Crie um banco de dados para a aplicação (ex: `todo_db`).
 
-3.  **Crie o arquivo de ambiente local:**
-    Copie o template `.env.example` para um novo arquivo chamado `.env` e preencha com os dados do seu banco local (apontando para `localhost`).
-    ```bash
-    cp .env.example .env
-    ```
+3.  **Crie o arquivo `.env`:**
+    Copie o conteúdo do `.env.example` para um novo arquivo chamado `.env` e preencha as variáveis. A `DATABASE_URL` deve apontar para o seu banco local em `localhost`.
+    * **Exemplo de `DATABASE_URL` para este arquivo:**
+      `postgresql://postgres:mysecretpassword@localhost:5432/todo_db?schema=public`
 
 4.  **Execute as migrações:**
     ```bash
@@ -243,22 +235,27 @@ curl -X DELETE http://localhost:3000/tasks/1 \
 
 ### Método 1: Com Docker (Recomendado)
 
-1.  **Garanta que os contêineres estejam no ar:**
+1.  Crie o arquivo `.env.test` a partir do `.env.example`. A `DATABASE_URL` deve apontar para o serviço `db` com o nome do banco de testes (ex: `todo_db_test`).
+      * **Exemplo de `DATABASE_URL` para este arquivo:**
+      `postgresql://postgres:mysecretpassword@db:5432/todo_db_test?schema=public`
+
+2.  **Garanta que os contêineres estejam no ar:**
     ```bash
     docker compose up -d
     ```
 
-2.  **Prepare o Banco de Dados de Teste:**
+3.  **Prepare o Banco de Dados de Teste:**
     Este comando executa as migrações no banco de dados de teste (`todo_db_test`).
     ```bash
     docker compose exec api npm run test:migrate
     ```
 
-3.  **Rode a Suíte de Testes:**
+4.  **Rode a Suíte de Testes:**
     Este comando executa todos os testes dentro do contêiner da API.
     ```bash
     docker compose exec api npm test
     ```
+    
 ### Método 2: Localmente (Sem Docker)
 
 1.  **Garanta que seu PostgreSQL local esteja rodando.**
@@ -268,7 +265,9 @@ curl -X DELETE http://localhost:3000/tasks/1 \
     createdb todo_db_test
     ```
      
-3.  **Crie o arquivo `.env.test` a partir do `.env.example`, apontando para seu banco de teste em `localhost`.**
+3.  Crie o arquivo `.env.test` a partir do `.env.example` e preencha a `DATABASE_URL` apontando para o seu banco de teste em `localhost`.
+    * **Exemplo de `DATABASE_URL` para este arquivo:**
+      `postgresql://postgres:mysecretpassword@db:5432/todo_db_test?schema=public`
    
 4.  **Prepare o banco de teste:**
     ```bash
@@ -283,19 +282,14 @@ curl -X DELETE http://localhost:3000/tasks/1 \
 
 ## Template para `.env.example`
 
-Ele serve de guia para a criação dos arquivos `.env.docker` e `.env.test`.
+Ele serve de guia para a criação dos arquivos `.env.docker`, `.env.test` e `.env`.
 
 ```env
 # Porta da aplicação
 PORT=3000
 
 # Connection URL para o banco de dados.
-# O DATABASE_URL tem o seguinte formato: DATABASE_URL="postgresql://SEU_USER:SUA_SENHA@SEU_HOST:SUA_PORTA/NOME_DO_BANCO?schema=public"
-# Para .env.docker, use o host 'db' e o banco principal (ex: 'todo_db').
-# Ex: DATABASE_URL="postgresql://postgres:mysecretpassword@db:5432/todo_db?schema=public"
-#
-# Para .env.test, use o host 'db' e o banco de testes (ex: 'todo_db_test').
-# Ex: DATABASE_URL="postgresql://postgres:mysecretpassword@db:5432/todo_db_test?schema=public"
+# O DATABASE_URL tem o seguinte formato: DATABASE_URL="postgresql://SEU_USUARIO:SUA_SENHA@SEU_HOST:SUA_PORTA/NOME_DO_BANCO?schema=public"
 DATABASE_URL=
 
 # Chave secreta para assinar os tokens JWT
