@@ -7,5 +7,4 @@ npx prisma migrate deploy
 
 echo "Migrações concluídas. Iniciando o servidor..."
 
-# O 'exec "$@"' executa o comando principal que foi passado para o contêiner.
-exec "$@"
+exec node src/server.js
