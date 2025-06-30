@@ -8,7 +8,8 @@ services:
         env_file:
             - .env.docker # Carrega as variáveis de ambiente a partir deste arquivo
         depends_on:
-            - db # Diz ao Docker para iniciar o serviço 'db' antes de iniciar a 'api'
+            db:
+                condition: service_healthy # Diz ao Docker para iniciar o serviço 'db' antes de iniciar a 'api'
         networks:
             - todonet
 
@@ -27,6 +28,11 @@ services:
             - postgres_data:/var/lib/postgresql/data # Persiste os dados do banco
         networks:
             - todonet
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U postgres"]
+            interval: 5s
+            timeout: 5s
+            retries: 5
 
 # Define a rede que os contêineres usarão para se comunicar
 networks:
