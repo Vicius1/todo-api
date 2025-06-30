@@ -108,7 +108,7 @@ Existem duas maneiras de executar a aplicação: com Docker (recomendado) ou loc
 3.  **Construa e inicie os contêineres:**
     Este comando irá construir a imagem da API e iniciar os serviços da API e do banco de dados em segundo plano.
     ```bash
-    docker compose up --build -d
+    npm run docker:start
     ```
     
 **Pronto!** A API estará rodando em `http://localhost:3000`.
@@ -241,19 +241,13 @@ curl -X DELETE http://localhost:3000/tasks/1 \
 
 2.  **Garanta que os contêineres estejam no ar:**
     ```bash
-    docker compose up -d
+    npm run docker:start
     ```
 
-3.  **Prepare o Banco de Dados de Teste:**
-    Este comando executa as migrações no banco de dados de teste (`todo_db_test`).
+3.  **Rode a Suíte de Testes:**
+    Este comando executa as migrações no banco de dados de teste e executa todos os testes dentro do contêiner da API.
     ```bash
-    docker compose exec api npm run test:migrate
-    ```
-
-4.  **Rode a Suíte de Testes:**
-    Este comando executa todos os testes dentro do contêiner da API.
-    ```bash
-    docker compose exec api npm test
+    npm run test:docker
     ```
     
 ### Método 2: Localmente (Sem Docker)
