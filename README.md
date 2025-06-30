@@ -103,7 +103,11 @@ Existem duas maneiras de executar a aplicação: com Docker (recomendado) ou loc
 2.  **Crie o arquivo `.env.docker`:**
     Copie o conteúdo do `.env.example` para um novo arquivo chamado `.env.docker` e preencha as variáveis. A `DATABASE_URL` deve apontar para o serviço `db`.
     * **Exemplo de `DATABASE_URL` para este arquivo:**
-      `postgresql://postgres:mysecretpassword@db:5432/todo_db?schema=public`
+      `postgresql://postgres:123@db:5432/todo_db?schema=public`
+      
+> **IMPORTANTE:**
+> As informações que serão colocadas nesse arquivo `.env.docker` devem ser **exatamente as mesmas** que estão definidas no arquivo `docker-compose.yml` na seção do serviço `db`.
+> O usuário pode alterá-las, desde que sejam iguais nos dois arquivos.
 
 3.  **Construa e inicie os contêineres:**
     Este comando irá construir a imagem da API e iniciar os serviços da API e do banco de dados em segundo plano.
@@ -128,7 +132,7 @@ Existem duas maneiras de executar a aplicação: com Docker (recomendado) ou loc
 3.  **Crie o arquivo `.env`:**
     Copie o conteúdo do `.env.example` para um novo arquivo chamado `.env` e preencha as variáveis. A `DATABASE_URL` deve apontar para o seu banco local em `localhost`.
     * **Exemplo de `DATABASE_URL` para este arquivo:**
-      `postgresql://postgres:mysecretpassword@localhost:5432/todo_db?schema=public`
+      `postgresql://postgres:123@localhost:5432/todo_db?schema=public`
 
 4.  **Execute as migrações:**
     ```bash
@@ -237,7 +241,7 @@ curl -X DELETE http://localhost:3000/tasks/1 \
 
 1.  Crie o arquivo `.env.test` a partir do `.env.example`. A `DATABASE_URL` deve apontar para o serviço `db` com o nome do banco de testes (ex: `todo_db_test`).
       * **Exemplo de `DATABASE_URL` para este arquivo:**
-      `postgresql://postgres:mysecretpassword@db:5432/todo_db_test?schema=public`
+      `postgresql://postgres:123@db:5432/todo_db_test?schema=public`
 
 2.  **Garanta que os contêineres estejam no ar:**
     ```bash
@@ -261,7 +265,7 @@ curl -X DELETE http://localhost:3000/tasks/1 \
      
 3.  Crie o arquivo `.env.test` a partir do `.env.example` e preencha a `DATABASE_URL` apontando para o seu banco de teste em `localhost`.
     * **Exemplo de `DATABASE_URL` para este arquivo:**
-      `postgresql://postgres:mysecretpassword@db:5432/todo_db_test?schema=public`
+      `postgresql://postgres:123@db:5432/todo_db_test?schema=public`
    
 4.  **Prepare o banco de teste:**
     ```bash
