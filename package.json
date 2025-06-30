@@ -8,7 +8,10 @@
         "start": "node src/server.js",
         "test": "jest --runInBand",
         "test:migrate": "dotenv -e .env.test -- npx prisma migrate deploy",
-        "postinstall": "prisma generate"
+        "postinstall": "prisma generate",
+        "docker:start": "docker compose up --build -d",
+        "test:docker": "docker compose exec api npm run test:migrate && docker compose exec api npm test",
+        "ci:test": "npm run docker:start && npm run test:docker && docker compose down"
     },
     "keywords": [],
     "author": "",
