@@ -106,7 +106,7 @@ Existem duas maneiras de executar a aplicação: com Docker (recomendado) ou loc
       `postgresql://postgres:123@db:5432/todo_db?schema=public`
       
 > **IMPORTANTE:**
-> As informações que serão colocadas nesse arquivo `.env.docker` devem ser **exatamente as mesmas** que estão definidas no arquivo `docker-compose.yml` na seção do serviço `db`.
+> As informações que serão colocadas nesse arquivo `.env.docker` (usuário, senha e nome do banco de dados) devem ser **exatamente as mesmas** que estão definidas no arquivo `docker-compose.yml` na seção do serviço `db`, em `environment`.
 > O usuário pode alterá-las, desde que sejam iguais nos dois arquivos.
 
 3.  **Construa e inicie os contêineres:**
